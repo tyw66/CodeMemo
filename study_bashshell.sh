@@ -110,15 +110,16 @@ COUTER=0
 while [ ${COUTER} -lt 5 ]
 do 
 	COUTER=`expr ${COUTER} + 1`
-	echo ${COUTER}
+	echo -e ${COUTER}" \c"
 done
+echo
 
 echo "【until循环】"
 #until循环，until后面要有空格
 NUMBER=0
 until [ ! $NUMBER -lt 10 ]
 do 
-	echo ${NUMBER}
+	echo -e ${NUMBER}" \c"
 	NUMBER=`expr ${NUMBER} + 1 `
 done
 
@@ -156,6 +157,17 @@ if [ $1 ] ; then		#等价于if [ $1 != "" ]
 else
 	echo "hello world!"
 fi
+
+
+#if语句判断文件夹存在
+if [ -d ./test ] ; then
+	rm -rf ./test
+fi
+#if语句判断文件存在
+if [ -f ./TestFile ] ; then
+	rm -rf ./TestFile
+fi
+
 
 echo "【if test 判断】"
 #if test，test检验条件是否成立
@@ -212,7 +224,12 @@ USERS=`who|wc -l`
 echo "Logged in user are $USERS"
 #两条命令之间用分号
 UP=`date;uptime`
+echo "date uptime is ${UP}"
+#CommandA && CommandB 表示如果执行A成功，就执行B
+#CommandA || CommandB 表示如果执行A失败，就执行B
+UP=`date || uptime`
 echo "uptime is ${UP}"
+
 echo 
 
 echo "===============> 运算符 operator <===================="
