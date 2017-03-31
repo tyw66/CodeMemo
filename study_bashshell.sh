@@ -6,8 +6,9 @@
 ## Author:tyw66 2639144635@qq.com
 ## Create date：2017-03-23
 ##
-## Reference:http://www.runoob.com/linux/linux-shell.html
-##          	http://man.linuxde.net/
+## Reference:
+##	http://c.biancheng.net/cpp/shell/
+##      http://man.linuxde.net/
 ##
 ## 有任何错误或可以改进的地方，欢迎向我提出～ths～
 ###########################################################
