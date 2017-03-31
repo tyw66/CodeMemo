@@ -2,15 +2,20 @@
 ##说明脚本需要的解释器：bash
 ###########################################################
 ##
-##One hour shell tutorial
-##Author:tyw66 2639144635@qq.com
-##Create date：2017-03-23
+## One hour shell tutorial
+## Author:tyw66 2639144635@qq.com
+## Create date：2017-03-23
 ##
-##Reference:http://www.runoob.com/linux/linux-shell.html
-##          http://man.linuxde.net/
+## Reference:http://www.runoob.com/linux/linux-shell.html
+##          	http://man.linuxde.net/
 ##
+## 有任何错误或可以改进的地方，欢迎向我提出～ths～
 ###########################################################
 clear
+
+echo "==========> 文件包含 file include <================"
+#通过source命令或者. 命令引入其他文件
+source ./function.sh
 
 echo "===============> 简单输出 echo output <==============="
 #echo输出命令 
@@ -41,7 +46,7 @@ unset PERSON
 echo ${PERSON}
 #不能删除只读变量,因此下面这行就会报错
 #unset PERSON_ID
-echo ">>变量替换"
+echo "【变量替换】"
 #如果变量为空或被删除，返回null variable，不改变PERSON值
 echo ${PERSON:-"null variable"} ${PERSON}
 #如果变量为空或被删除，返回null variable，设置PERSON值为nullWord
@@ -73,6 +78,7 @@ echo "传递的所有参数：" "$@"
 echo
 
 echo "==================> 循环 loop <======================="
+echo "【for循环】"
 #for循环, 区别$* "$*" $@ "$@"
 for var in $* "$*" $@ "$@"
 do 
@@ -98,6 +104,7 @@ do
 	echo ${FILE}
 done
 
+echo "【while循环】"
 #while循环，while后面要有空格
 COUTER=0
 while [ ${COUTER} -lt 5 ]
@@ -106,7 +113,8 @@ do
 	echo ${COUTER}
 done
 
-#until循环，while后面要有空格
+echo "【until循环】"
+#until循环，until后面要有空格
 NUMBER=0
 until [ ! $NUMBER -lt 10 ]
 do 
@@ -114,30 +122,81 @@ do
 	NUMBER=`expr ${NUMBER} + 1 `
 done
 
-#跳出循环 break；跳出第n层循环 break n;继续循环 continue
-#todo
+#跳出循环 break；跳出第n层循环 break n;默认跳出最大循环
+#继续循环 continue
+echo "【break 跳出循环】"
+while :
+do
+	echo -n "Input a number between 1 to 5:"
+	read aNum
+	case $aNum in
+		1|2|3|4|5) 
+			echo "your number is ${aNum}!"	
+			;;
+		*) 
+			echo "You do not select a number between 1 to 5." 
+			echo "game over!"
+			break			
+		;;
+	esac
+done
+
 echo
 
 echo "==================> 判断  <======================="
+echo "【if 判断】"
 echo $1
 #if语句
-if [ !$1 ]		#等价于if [ $1 == "" ]
-then
-	echo "hello world!"
-elif [ $1 == 'tyw66' ]
-then
-	echo "hello author!"
+if [ $1 ] ; then		#等价于if [ $1 != "" ]
+	if [ $1 == 'tyw66' ] ;	then
+		echo "hello author!"
+	else
+		echo "hello $1!"
+	fi
 else
-	echo "hello $1!"
+	echo "hello world!"
 fi
 
-#if test连用
-#todo
+echo "【if test 判断】"
+#if test，test检验条件是否成立
+num1=2*3
+num2=1+5
+if test $[num1] -eq $[num2]
+then
+	echo 'the two numbers are equal.'
+else
+	echo "the to numbers are not equal."
+fi
 
-#case循环
-#todo
+echo "【case 判断】"
+#case esac
+echo -n "Input a number between 1 to 5:"
+read varNum
+case ${varNum} in
+	# 匹配的模式以）结束，执行到;;处结束
+	1) echo "your select is 1"	;;
+	2) echo "your select is 2"	;;
+	3) echo "your select is 3"	;;
+	4) echo "your select is 4"	;;
+	#如过没有匹配到，则用*号捕获该值
+	*) echo "your select is *"	;;
+esac
 
 
+##另一个例子
+option="${1}"
+case ${option} in
+	-f) FILE="${2}"
+		echo "file name is ${FILE}"
+		;;
+	-d) DIR="${2}"
+		echo "Dir name is ${DIR}"
+		;;
+	*)
+		echo "`basename ${0}`:usage:[-f file] | [-d directory]"
+		##exit 1 #退出脚本
+		;;
+esac
 echo
 
 echo "=================> 命令 command <====================="
@@ -157,8 +216,9 @@ echo "uptime is ${UP}"
 echo 
 
 echo "===============> 运算符 operator <===================="
-echo ">>算术运算符"
+echo "【算术运算符】"
 #expr命令实现简单计算。注意表达式与运算符之间要有空格，被` `包含
+#表达式在方括号之间，要有空格
 val=`expr 2 + 1`
 echo "2+2= ${val}"
 #乘号左边需要加反斜杠\
@@ -169,13 +229,50 @@ echo "2*20+2+1= "`expr ${a} \* ${b} + ${val}`
 echo "${b}除以${val}的余数是："`expr ${b} % ${val}`
 ##awk todo
 
-echo ">>关系运算符"
+echo "【(数字的)关系运算符】"
+a=1
+b=2
+#不能直接echo,下面不会输出true/false
+echo [ $a -eq $b ]
+#关系运算符有：-eq -ne -gt -lt -ge -le
+#表示：=、!=、>、<、>=、<=
+for var in -eq -ne -gt -lt -ge -le
+do
+	if [ ${a} ${var} ${b} ]  #注意空格
+	then
+		echo ${a}  ${var}  ${b} "= true"
+	else
+		echo ${a}  ${var}  ${b} "= false"
+	fi
+done
+
+echo "【布尔运算符】"
+#与：-a
+if [ `expr 1+1`==2 -a  `expr 1+1`!=2 ]
+then
+	echo "1+1=2 and 1+1!=2 : true"		
+else
+	echo "1+1=2 and 1+1!=2 :false"
+fi
+#或：-o
+if [ `expr 1+1`==2 -o  `expr 1+1`!=2 ]
+then
+	echo "1+1=2 or 1+1!=2 : true"		
+else
+	echo "1+1=2 or 1+1!=2 :false"
+fi
+#非：!
+if [ !false ]
+then
+	echo "!false=true"		
+else
+	echo "uhhh..."
+fi
+echo
+
+echo "【字符串运算符】"
 #todo
-echo ">>布尔运算符"
-#todo
-echo ">>字符串运算符"
-#todo
-echo ">>文件测试运算符"
+echo "【文件测试运算符】"
 #todo
 echo
 
@@ -224,21 +321,31 @@ printf 'my name is %s,I am born in %i\n'
 echo
 
 echo "==========> IO重定向  IO redirection <================"
-echo ">>输出重定向"
+echo "【输出重定向】"
 #输出结果重定向到文件，用>，会覆盖原有内容
 echo -e "this is some words will be covered">TestFile
 who>TestFile
 #不覆盖的话，用>>追加
 echo -e "\nTest file.\nThis is some test word..">>TestFile
-echo ">>输入重定向"
+echo "【输入重定向】"
 #用<
 wc -l TestFile
 wc -l < TestFile
+#一般情况下，每个 Unix/Linux 命令运行时都会打开三个文件： 
+#标准输入文件(stdin)：stdin的文件描述符为0，Unix程序默认从stdin读取数据。
+#标准输出文件(stdout)：stdout 的文件描述符为1，Unix程序默认向stdout输出数据。
+#标准错误文件(stderr)：stderr的文件描述符为2，Unix程序会向stderr流中写入错误信息。
 #todo
 echo
 
 echo "==========> 函数 function <================"
-#todo
+hello
+helloN 6
 
-echo "==========> 文件包含 file include <================"
-#todo
+
+
+
+echo "=================End======================"
+
+
+
