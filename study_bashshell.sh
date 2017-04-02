@@ -8,7 +8,7 @@
 ##
 ## Reference:
 ##	http://c.biancheng.net/cpp/shell/
-##      http://man.linuxde.net/
+##  http://man.linuxde.net/
 ##
 ## 有任何错误或可以改进的地方，欢迎向我提出～ths～
 ###########################################################
