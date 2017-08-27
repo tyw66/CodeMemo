@@ -115,7 +115,19 @@ while (True):
     print test
 
 
-print '========================= 包管理 ============================'
+print '========================= 模块管理 ============================'
+# import Myfile
+# print Myfile.title
+
+from Myfile import  title
+print title
+
+
+
+
+
+
+
 # set PYTHONPATH="c:\python27\lib"
 ## 方法1 导入整个
 import package
@@ -123,6 +135,8 @@ package.print_func("tyw66")
 ## 方法2 导入包中的部分函数
 from package import hello
 hello()
+
+
 
 
 print "========================= 文件操作 ============================"
